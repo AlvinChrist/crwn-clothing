@@ -34,9 +34,12 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, provider);
 export const db = getFirestore();
-export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) => {
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalInfo = {}
+) => {
   if (!userAuth) return;
-  
+
   const userDocRef = doc(db, "users", userAuth.uid); // doc(database, collection, document_unique_id)
   const userSnapshot = await getDoc(userDocRef);
 
@@ -49,7 +52,7 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) 
         displayName,
         email,
         createdAt,
-        ...additionalInfo
+        ...additionalInfo,
       });
     } catch (err) {
       console.log("Error creating the user", err.message);
@@ -62,4 +65,9 @@ export const createUserDocumentFromAuth = async (userAuth, additionalInfo = {}) 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
   return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const signInAuthWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+  return await signInWithEmailAndPassword(auth, email, password);
 };
